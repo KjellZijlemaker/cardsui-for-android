@@ -3,6 +3,7 @@ package com.fima.cardsui.views;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -117,6 +118,34 @@ public class CardUI extends FrameLayout {
     public void setSwipeable(boolean b) {
         mSwipeable = b;
     }
+    
+    /**
+     * This method is for making sure that scrolling up works.
+     * It takes the swipeRefreshLayout and checks if the CardsUI will
+     * be on top of the screen, if so it will be refreshed
+     * @param swipeLayout
+     */
+	public void setListViewScroll(final SwipeRefreshLayout swipeLayout) {
+		mListView.setOnScrollListener(new OnScrollListener() {
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+			}
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				if (firstVisibleItem == 0) {
+					swipeLayout.setEnabled(true);
+				} else {
+					swipeLayout.setEnabled(false);
+				}
+			
+			}
+		});
+	}
+
 
     public void setHeader(View header) {
 
@@ -310,6 +339,11 @@ public class CardUI extends FrameLayout {
         mStacks.add(stack);
         if (refresh)
             refresh();
+
+    }
+    
+    public void deleteStacks() {
+    	mStacks.clear();
 
     }
 
